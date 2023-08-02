@@ -1,0 +1,53 @@
+.game {
+  margin: auto;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+  width: max-content;
+}
+
+.field {
+  width: max-content;
+  border: 1px solid #ccc;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+
+  &.column {
+    flex-shrink: 0;
+  }
+}
+
+.scale {
+  background: url('/assets/scale.jpg');
+}
+
+.apple {
+  background: url('/assets/apple.svg');
+}
+
+.snake-head {
+  transform: rotate(-90deg);
+  background: url('/assets/snake-head.svg');
+  background-size: cover;
+
+  &__down {
+    transform: none;
+  }
+
+  &__up {
+    transform: rotate(180deg);
+  }
+
+  &__left {
+    transform: rotate(90deg);
+  }
+}

@@ -1,14 +1,17 @@
-<div class="field">
-  <div class="row"
-       *ngFor="let i of [].constructor(10); index as rowIndex">
-    <div class="cell column"
-         [class.blue]="snake.includes(columnIndex + 1 + rowIndex * 10)"
-         [class.green]="apple === columnIndex + 1 + rowIndex * 10"
-         [class.yellow]="eatenApples.includes(columnIndex + 1 + rowIndex * 10)"
-         *ngFor="let j of [].constructor(10); index as columnIndex"></div>
-  </div>
-</div>
+<form (submit)="startGame()"
+      *ngIf="!gameStarted; else game">
+  <input type="number"
+         name="width"
+         [(ngModel)]="width">
+  <input type="number"
+         name="interval"
+         [(ngModel)]="interval">
 
-<div class="score">
-  Score: {{ score }}
-</div>
+  <button>Start Game!</button>
+</form>
+
+<ng-template #game>
+  <app-game [width]="width"
+            (cancelGame)="cancelGame()"
+            [interval]="interval"></app-game>
+</ng-template>

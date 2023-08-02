@@ -1,0 +1,26 @@
+<section class="game">
+  <div class="field">
+    <div class="row"
+         *ngFor="let i of [].constructor(width); index as rowIndex">
+      <ng-container *ngFor="let j of [].constructor(width); index as columnIndex">
+        <ng-container *ngIf="(columnIndex + 1 + rowIndex * width) as cellNumber">
+          <div class="cell column"
+               [ngClass]="{
+                  'scale': snake.includes(cellNumber) || eatenApples.includes(cellNumber),
+                  'snake-head': snakeHead === cellNumber,
+                  'snake-head__up': snakeHead === cellNumber && direction === 'up',
+                  'snake-head__down': snakeHead === cellNumber && direction === 'down',
+                  'snake-head__left': snakeHead === cellNumber && direction === 'left',
+                  'apple': apple === cellNumber
+               }"></div>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="score">
+    Score: {{ score }}
+  </div>
+
+  <button (click)="emitCancelGame()">Cancel</button>
+</section>

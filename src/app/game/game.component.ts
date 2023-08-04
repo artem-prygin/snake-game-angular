@@ -1,4 +1,10 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
+import { MoveDirectionEnum } from '../../models/enums/move-direction.enum';
+import { KeyboardKeysEnum } from '../../models/enums/keyboard-keys.enum';
+import { MatDialog } from '@angular/material/dialog';
+import { PopupMessageComponent } from '../popup-message/popup-message.component';
+import { lastValueFrom } from 'rxjs';
+import { SnakeDefaults } from '../../models/constants/snake-defaults';
 
 @Component({
   selector: 'app-game',
@@ -11,10 +17,11 @@ export class GameComponent implements OnInit {
   @Output() cancelGame = new EventEmitter<boolean>();
 
   cells: number[] = [];
-  snake: number[] = [1, 2, 3, 4, 5];
+  snake: number[] = [...SnakeDefaults.startCells];
   apple: number;
   eatenApples: number[] = [];
-  direction: 'right' | 'left' | 'up' | 'down' = 'right';
+  MoveDirection = MoveDirectionEnum;
+  direction: MoveDirectionEnum = MoveDirectionEnum.Right;
   gameInterval: ReturnType<typeof setInterval>;
   arrowPressed: boolean;
   score = 0;
@@ -27,32 +34,36 @@ export class GameComponent implements OnInit {
     this.arrowPressed = true;
 
     switch (event.key) {
-      case 'ArrowDown': {
-        if (this.direction === 'up') {
+      case KeyboardKeysEnum.S:
+      case KeyboardKeysEnum.ArrowDown: {
+        if (this.direction === MoveDirectionEnum.Up) {
           return;
         }
-        this.direction = 'down';
+        this.direction = MoveDirectionEnum.Down;
         break;
       }
-      case 'ArrowUp': {
-        if (this.direction === 'down') {
+      case KeyboardKeysEnum.W:
+      case KeyboardKeysEnum.ArrowUp: {
+        if (this.direction === MoveDirectionEnum.Down) {
           return;
         }
-        this.direction = 'up';
+        this.direction = MoveDirectionEnum.Up;
         break;
       }
-      case 'ArrowRight': {
-        if (this.direction === 'left') {
+      case KeyboardKeysEnum.D:
+      case KeyboardKeysEnum.ArrowRight: {
+        if (this.direction === MoveDirectionEnum.Left) {
           return;
         }
-        this.direction = 'right';
+        this.direction = MoveDirectionEnum.Right;
         break;
       }
-      case 'ArrowLeft': {
-        if (this.direction === 'right') {
+      case KeyboardKeysEnum.A:
+      case KeyboardKeysEnum.ArrowLeft: {
+        if (this.direction === MoveDirectionEnum.Right) {
           return;
         }
-        this.direction = 'left';
+        this.direction = MoveDirectionEnum.Left;
         break;
       }
       default: {
@@ -63,6 +74,9 @@ export class GameComponent implements OnInit {
 
   get snakeHead(): number {
     return this.snake[this.snake.length - 1];
+  }
+
+  constructor(private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -77,28 +91,28 @@ export class GameComponent implements OnInit {
       this.arrowPressed = false;
 
       switch (this.direction) {
-        case 'right': {
+        case MoveDirectionEnum.Right: {
           const nextSnakeCell = lastSnakeCell % this.width === 0
             ? lastSnakeCell - (this.width - 1)
             : lastSnakeCell + 1;
           this.regenerateSnake(nextSnakeCell);
           break;
         }
-        case 'left': {
+        case MoveDirectionEnum.Left: {
           const nextSnakeCell = (lastSnakeCell + (this.width - 1)) % this.width === 0
             ? lastSnakeCell + (this.width - 1)
             : lastSnakeCell - 1;
           this.regenerateSnake(nextSnakeCell);
           break;
         }
-        case 'down': {
+        case MoveDirectionEnum.Down: {
           const nextSnakeCell = lastSnakeCell > (this.width * (this.width - 1))
             ? lastSnakeCell - (this.width * (this.width - 1))
             : lastSnakeCell + this.width;
           this.regenerateSnake(nextSnakeCell);
           break;
         }
-        case 'up': {
+        case MoveDirectionEnum.Up: {
           const nextSnakeCell = lastSnakeCell <= this.width
             ? lastSnakeCell + (this.width * (this.width - 1))
             : lastSnakeCell - this.width;
@@ -134,6 +148,7 @@ export class GameComponent implements OnInit {
   }
 
   generateApple(): void {
+    this.apple = null;
     const emptyCells = this.cells.filter(cell => !this.snake.includes(cell));
     const randomIndex = Math.floor(Math.random() * emptyCells.length);
     this.apple = emptyCells[randomIndex];
@@ -156,5 +171,27 @@ export class GameComponent implements OnInit {
 
   resumeGame(): void {
     this.startOrResumeGame();
+  }
+
+  restartGame(): void {
+    this.snake = [...SnakeDefaults.startCells];
+    this.generateApple();
+    this.startOrResumeGame();
+  }
+
+  async openCancelGamePopup(): Promise<void> {
+    this.pauseGame();
+    const dialog = this.dialog.open(PopupMessageComponent, {
+      panelClass: 'popup',
+      data: {
+        message: 'Are you sure you want to cancel current game?',
+      },
+    });
+    const result = await lastValueFrom(dialog.afterClosed());
+    if (result?.confirm) {
+      return this.emitCancelGame();
+    }
+
+    this.resumeGame();
   }
 }

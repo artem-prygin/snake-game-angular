@@ -8,9 +8,9 @@
                [ngClass]="{
                   'scale': snake.includes(cellNumber) || eatenApples.includes(cellNumber),
                   'snake-head': snakeHead === cellNumber,
-                  'snake-head__up': snakeHead === cellNumber && direction === 'up',
-                  'snake-head__down': snakeHead === cellNumber && direction === 'down',
-                  'snake-head__left': snakeHead === cellNumber && direction === 'left',
+                  'snake-head__up': snakeHead === cellNumber && direction === MoveDirection.Up,
+                  'snake-head__down': snakeHead === cellNumber && direction === MoveDirection.Down,
+                  'snake-head__left': snakeHead === cellNumber && direction === MoveDirection.Left,
                   'apple': apple === cellNumber
                }"></div>
         </ng-container>
@@ -23,7 +23,7 @@
   </div>
 
   <div class="buttons d-flex align-center justify-between mt-10">
-    <button (click)="emitCancelGame()">Cancel</button>
+    <button (click)="openCancelGamePopup()">Cancel game</button>
 
     <button (click)="gameInterval ? pauseGame() : resumeGame()">
       {{ gameInterval ? 'Pause Game' : 'Resume Game' }}

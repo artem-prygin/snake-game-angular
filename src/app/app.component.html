@@ -1,5 +1,5 @@
 <form (submit)="startGame()"
-      *ngIf="!gameStarted; else game">
+      *ngIf="gameStarted; else game">
   <input type="number"
          name="width"
          [(ngModel)]="width">

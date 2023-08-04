@@ -2,3 +2,41 @@ body {
   margin: 0;
   height: 100vh;
 }
+
+button {
+  outline: none;
+  padding: 10px;
+  cursor: pointer;
+  background: none;
+  border: 1px solid #ccc;
+  width: max-content;
+  transition: background-color .3s;
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}

@@ -68,7 +68,10 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.cells = Array.from({ length: this.width ** 2 }, ((_, i) => i + 1));
     this.generateApple();
+    this.startOrResumeGame();
+  }
 
+  startOrResumeGame(): void {
     this.gameInterval = setInterval(() => {
       const lastSnakeCell = this.snake[this.snake.length - 1];
       this.arrowPressed = false;
@@ -144,5 +147,14 @@ export class GameComponent implements OnInit {
   emitCancelGame(): void {
     clearInterval(this.gameInterval);
     this.cancelGame.emit(true);
+  }
+
+  pauseGame(): void {
+    clearInterval(this.gameInterval);
+    this.gameInterval = null;
+  }
+
+  resumeGame(): void {
+    this.startOrResumeGame();
   }
 }

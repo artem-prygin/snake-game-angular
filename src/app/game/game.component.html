@@ -18,9 +18,15 @@
     </div>
   </div>
 
-  <div class="score">
+  <div class="score mt-10">
     Score: {{ score }}
   </div>
 
-  <button (click)="emitCancelGame()">Cancel</button>
+  <div class="buttons d-flex align-center justify-between mt-10">
+    <button (click)="emitCancelGame()">Cancel</button>
+
+    <button (click)="gameInterval ? pauseGame() : resumeGame()">
+      {{ gameInterval ? 'Pause Game' : 'Resume Game' }}
+    </button>
+  </div>
 </section>

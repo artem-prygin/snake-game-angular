@@ -4,7 +4,7 @@ export enum KeyboardKeysEnum {
   ArrowRight = 'ArrowRight',
   ArrowLeft = 'ArrowLeft',
   W = 'w',
-  A = 'A',
-  S = 'S',
-  D = 'D',
+  A = 'a',
+  S = 's',
+  D = 'd',
 }

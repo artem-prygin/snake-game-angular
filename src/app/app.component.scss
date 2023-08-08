@@ -4,9 +4,17 @@ form {
   flex-direction: column;
   padding: 50px;
 
-  input, button {
+  input, button, ng-select {
     font-size: 25px;
     margin-bottom: 25px;
     width: 250px;
+  }
+
+  input, ng-select {
+    border-color: transparent;
+  }
+
+  button {
+    padding: 10px;
   }
 }

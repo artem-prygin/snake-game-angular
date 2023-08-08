@@ -1,3 +1,7 @@
+<div class="controls">
+  You can manipulate snake by keyboard arrows or WASD keys
+</div>
+
 <section class="game">
   <div class="field">
     <div class="row"
@@ -23,10 +27,22 @@
   </div>
 
   <div class="buttons d-flex align-center justify-between mt-10">
-    <button (click)="openCancelGamePopup()">Cancel game</button>
-
-    <button (click)="gameInterval ? pauseGame() : resumeGame()">
-      {{ gameInterval ? 'Pause Game' : 'Resume Game' }}
+    <button class="secondary"
+            (click)="openCancelGamePopup()">Cancel game
     </button>
+
+    <ng-container *ngIf="!gameFinished; else restartGameTemplate">
+      <button class="secondary"
+              (click)="gameInterval ? pauseGame() : resumeGame()">
+        {{ gameInterval ? 'Pause Game' : 'Resume Game' }}
+      </button>
+    </ng-container>
+
+    <ng-template #restartGameTemplate>
+      <button class="secondary"
+              (click)="restartGame()">
+        {{ 'Restart Game' }}
+      </button>
+    </ng-template>
   </div>
 </section>

@@ -1,0 +1,40 @@
+h4 {
+  margin: 0;
+}
+
+button {
+  outline: none;
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  width: max-content;
+  transition: background-color .3s;
+
+  &.primary {
+    background-color: #82C35F;
+    color: #fff;
+
+    &:hover {
+      background-color: darken(#82C35F, 10);
+    }
+  }
+
+  &.secondary {
+    background-color: #fff;
+
+    &:hover {
+      background-color: #eee;
+    }
+  }
+
+  &[disabled] {
+    background-color: #eee;
+    pointer-events: none;
+    border-color: #eee;
+  }
+}
+
+.ng-select .ng-select-container {
+  border-radius: 0;
+  border-color: transparent;
+}

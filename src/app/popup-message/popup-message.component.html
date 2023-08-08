@@ -2,7 +2,12 @@
   <h4 class="mb-10">{{data.message}}</h4>
 
   <div class="d-flex justify-between buttons">
-    <button (click)="close()">No, resume game</button>
-    <button (click)="close(true)">Yes, cancel game</button>
+    <button *ngFor="let btn of data.buttons"
+            class="mr-5 ml-5"
+            (click)="close(btn.actionType)"
+            [class.primary]="btn.buttonType === ButtonTypeEnum.Primary"
+            [class.secondary]="btn.buttonType === ButtonTypeEnum.Secondary">
+      {{btn.text}}
+    </button>
   </div>
 </div>

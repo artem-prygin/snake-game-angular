@@ -1,17 +1,34 @@
-<form (submit)="startGame()"
-      *ngIf="!gameStarted; else game">
-  <input type="number"
-         name="width"
-         [(ngModel)]="width">
-  <input type="number"
-         name="interval"
-         [(ngModel)]="interval">
+<ng-container *ngIf="form">
+  <form [formGroup]="form"
+        *ngIf="!gameStarted; else game">
+    <h3 class="text-center">Welcome to Snake Game!</h3>
+    
+    <label class="mb-5">Cells (from 5 to 15):</label>
+    <input type="number"
+           formControlName="width"
+           class="mb-10"
+           min="5"
+           max="15"
+           name="width">
 
-  <button>Start Game!</button>
-</form>
+    <label class="mb-5">Speed:</label>
 
-<ng-template #game>
-  <app-game [width]="width"
-            (cancelGame)="cancelGame()"
-            [interval]="interval"></app-game>
-</ng-template>
+    <ng-select formControlName="speed"
+               [clearable]="false">
+      <ng-option *ngFor="let gameSpeed of GameSpeedEnum | enumToArray"
+                 [value]="gameSpeed">{{GameSpeedEnum.getSpeedName(gameSpeed)}}</ng-option>
+    </ng-select>
+
+    <button class="primary"
+            (click)="startGame()"
+            [disabled]="form.invalid">Start Game!
+    </button>
+  </form>
+
+  <ng-template #game>
+    <app-game [width]="form.value.width"
+              (cancelGame)="cancelGame()"
+              [speed]="form.value.speed"></app-game>
+  </ng-template>
+</ng-container>
+
